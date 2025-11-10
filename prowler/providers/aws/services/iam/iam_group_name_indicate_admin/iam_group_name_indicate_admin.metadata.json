@@ -1,0 +1,30 @@
+{
+  "Provider": "aws",
+  "CheckID": "iam_group_name_indicate_admin",
+  "CheckTitle": "Group Name does not Indicate Admin Access",
+  "CheckType": [],
+  "ServiceName": "iam",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "arn:partition:service:region:account-id:resource-id",
+  "Severity": "informational",
+  "ResourceType": "AwsIamGroup",
+  "Description": "An AWS principle was found that grants admin privileges within the AWS account. The name of this group does not clearly indicate the level of privilege provided.",
+  "Risk": "To make maintaining the account as easy as possible and to reduce the risk of administrative privileges being granted to AWS principles that do not require them by mistake it is recommended to implement a common naming convention for all custom groups, roles and policies which indicates the level of access being granted.",
+  "RelatedUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups_manage.html",
+  "Remediation": {
+    "Code": {
+      "CLI": "aws iam detach-group-policy --group-name <groupname> --policy-arn arn:aws:iam::aws:policy/AdministratorAccess",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "Implement a simple naming convention for all custom groups, roles and policies which clearly indicates what permissions they grant and who they should apply to.",
+      "Url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}
