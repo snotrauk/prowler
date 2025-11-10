@@ -1,0 +1,32 @@
+{
+  "Provider": "aws",
+  "CheckID": "iam_role_cross_account_trust_permissive",
+  "CheckTitle": "Overly permissive cross-account assume role trust policy",
+  "CheckType": [],
+  "ServiceName": "iam",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "arn:partition:service:region:account-id:resource-id",
+  "Severity": "high",
+  "ResourceType": "AwsIamRole",
+  "Description": "The affected AWS roles have trust policies that trust all IAM principals within another account to assume the role and access the privileges it holds. This could potentially be abused by malicious external users to escalate privileges and gain unauthorised access to resources within the account. ",
+  "Risk": "Potentially allow attackers to gain unauthorized access to resources",
+  "RelatedUrl": "",
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "It is recommended that you review the role trust policy to determine which principals in external accounts should legitimately be allowed to assume the affected role. The role trust should then be updated to trust only those principals, which would prevent unauthorised individuals from access the highly-privilege policies attached the role.",
+      "Url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+    }
+  },
+  "Categories": [
+    "trustboundaries"
+  ],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}
