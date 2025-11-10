@@ -1,0 +1,32 @@
+{
+  "Provider": "aws",
+  "CheckID": "iam_role_cross_account_trust_permissive_github_oidc",
+  "CheckTitle": "Overly permissive Cross Account Assume Role Trust Policy GitHub OIDC",
+  "CheckType": [],
+  "ServiceName": "iam",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "arn:partition:service:region:account-id:resource-id",
+  "Severity": "high",
+  "ResourceType": "AwsIamRole",
+  "Description": "The affected role is configured to trust the GitHub OIDC Identity Provider but does not enforce any subject conditions, This means an external attacker with knowledge of the role ARN can create a GitHub action that can assume this role and access the affected account.",
+  "Risk": "Allows attackers to gain unauthorized access to resources",
+  "RelatedUrl": "",
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "Configure the role trust policy to include aditional subject conditons which only allows the role be assume by trusted gitHub repositores and branches.",
+      "Url": "https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws"
+    }
+  },
+  "Categories": [
+    "trustboundaries"
+  ],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}
