@@ -10,16 +10,15 @@ class iam_role_cross_account_trust_permissive(Check):
         findings = []
         if iam_client.roles:
             for role in iam_client.roles:
-                account_id = re.match(r"arn:aws:iam::([0-9]+):", role.arn).group(1) # is there a better way? audited_account?
-                report = Check_Report_AWS(metadata=self.metadata(), resource=role)
-                report.region = iam_client.region
-                report.status = "PASS"
-                report.resource_id = role.name
-                report.resource_arn = role.arn
-                report.status_extended = f"Cross-Account IAM Role {role.name} does not have an overly permissive trust policy."
                 if "aws-service-role" not in role.arn:
+                    account_id = re.match(r"arn:aws:iam::([0-9]+):", role.arn).group(1) # is there a better way? audited_account?
+                    report = Check_Report_AWS(metadata=self.metadata(), resource=role)
+                    report.region = iam_client.region
+                    report.status = "PASS"
+                    report.resource_id = role.name
+                    report.resource_arn = role.arn
+                    report.status_extended = f"Cross-Account IAM Role {role.name} does not have an overly permissive trust policy."
                     statements = role.assume_role_policy.get("Statement")
-                    report.resource_details = f"{ statements }"
                     for statement in statements:
                         if statement["Effect"] == "Allow":
                             if "AWS" in statement["Principal"]:
