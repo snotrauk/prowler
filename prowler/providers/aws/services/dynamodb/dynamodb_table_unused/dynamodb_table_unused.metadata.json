@@ -1,0 +1,37 @@
+{
+  "Provider": "aws",
+  "CheckID": "dynamodb_table_unused",
+  "CheckTitle": "Unused DynamoDB table",
+  "CheckType": [
+    "Software and Configuration Checks/AWS Security Best Practices"
+  ],
+  "ServiceName": "dynamodb",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "informational",
+  "ResourceType": "AwsDynamoDbTable",
+  "Description": "**DynamoDB tables** have an **item count** of 0. To minimise costs and maintain good hygiene of the AWS environment it is recommended that all unused resources are deleted.",
+  "Risk": "As an Amazon DynamoDB customer, you are being charged for DynamoDB Read and Write capacity, regardless of whether or not you are using the capacity units provisioned for your tables. Removing unused Amazon DynamoDB tables from your AWS account will help you to avoid unexpected charges on your AWS bill and halt any access to these tables.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [
+    "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/CostOptimization_UnusedResources.html"
+  ],
+  "Remediation": {
+    "Code": {
+      "CLI": "aws dynamodb delete-table --table-name <TABLE_NAME>",
+      "NativeIaC": "",
+      "Other": "Delete any unused Dynamo DB tables.",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "Ensure unused DynamoDB tables are deleted.",
+      "Url": "https://hub.prowler.com/check/dynamodb_table_unused"
+    }
+  },
+  "Categories": [
+    "hygiene"
+  ],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}
