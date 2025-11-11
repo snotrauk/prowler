@@ -11,7 +11,6 @@ class iam_role_cross_account_trust_permissive(Check):
         if iam_client.roles:
             for role in iam_client.roles:
                 if "aws-service-role" not in role.arn:
-                    account_id = re.match(r"arn:aws:iam::([0-9]+):", role.arn).group(1) # is there a better way? audited_account?
                     report = Check_Report_AWS(metadata=self.metadata(), resource=role)
                     report.region = iam_client.region
                     report.status = "PASS"
@@ -24,7 +23,7 @@ class iam_role_cross_account_trust_permissive(Check):
                             if "AWS" in statement["Principal"]:
                                 if "sts:AssumeRole" in statement["Action"]:
                                     if re.match(r"arn:aws:iam::[0-9]+:root", str(statement["Principal"]["AWS"])): # check if whole account is trusted
-                                        if account_id != re.match(r"arn:aws:iam::([0-9]+):root", str(statement["Principal"]["AWS"])).group(1): # ensure trust is of external account
+                                        if iam_client.audited_account != re.match(r"arn:aws:iam::([0-9]+):root", str(statement["Principal"]["AWS"])).group(1): # ensure trust is of external account
                                             report.region = iam_client.region
                                             report.status = "FAIL"
                                             report.resource_id = role.name
