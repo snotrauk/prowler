@@ -1,0 +1,38 @@
+{
+  "Provider": "aws",
+  "CheckID": "awslambda_function_confused_deputy",
+  "CheckTitle": "Lambda function URL is not publicly accessible",
+  "CheckType": [
+    "Software and Configuration Checks/AWS Security Best Practices/Network Reachability",
+    "Effects/Data Exposure"
+  ],
+  "ServiceName": "awslambda",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "AwsLambdaFunction",
+  "Description": "Lambda policies allow AWS services to access the function without adequate conditional context restrictions. Without any conditional restrictions, functions are vulnerable to the confused deputy problem which could allow unauthorised services in other AWS accounts indirect access to the affected function.",
+  "Risk": "When an AWS service principal from a calling service (CloudWatch for example) is accessing a resource in AWS Lambda, the function’s resource policy is only authorizing the AWS service principal, and not the actor who configured the calling service. For example, an Lambda function that trusts the CloudTrail service principal with no conditions could receive CloudTrail logs from the AWS accounts that a trusted admin configures, but also CloudTrail logs from an unauthorized actor in their AWS account, if they know the name of the Lambda function.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [
+    "https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html#cross-service-confused-deputy-prevention"
+  ],
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "It is recommended that Lambda function policies that allows access to other AWS services contain conditional access statements. Using conditions and specifying the full ARN of the allowed resources would restrict access to only legitimate resources and reduce the potential for abuse. Specifying the full ARN, including region and resource name, will prevent attackers from leveraging other AWS services to access potentially sensitive data within your Lambda functions.\nWhere appropriate use the following conditional contexts following the principal of least privilege to effectively limit the scope of function policies and prevent unintended access opportunities:\n- aws:SourceArn\n- aws:SourceAccount\n- aws:SourceOrgID\n- aws:SourceOrgPaths\nMore Information",
+      "Url": "https://hub.prowler.com/check/awslambda_function_confused_deputy"
+    }
+  },
+  "Categories": [
+    "internet-exposed"
+  ],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}
