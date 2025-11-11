@@ -12,7 +12,6 @@ class iam_role_cross_account_trust_permissive_github_oidc(Check):
             for role in iam_client.roles:
                 if "aws-service-role" not in role.arn:
                     safe = True
-                    account_id = re.match(r"arn:aws:iam::([0-9]+):", role.arn).group(1) # is there a better way? audited_account?
                     report = Check_Report_AWS(metadata=self.metadata(), resource=role)
                     report.region = iam_client.region
                     report.status = "PASS"
