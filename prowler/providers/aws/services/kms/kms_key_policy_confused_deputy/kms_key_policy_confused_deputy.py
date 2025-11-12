@@ -16,8 +16,7 @@ class kms_key_policy_confused_deputy(Check):
                 if is_policy_public(
                     key.policy,
                     kms_client.audited_account,
-                    check_cross_service_confused_deputy=True,
-                    not_allowed_actions=["kms:*"],
+                    check_cross_service_confused_deputy=True
                 ):
                     report.status = "FAIL"
                     report.status_extended = (
