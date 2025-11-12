@@ -1,0 +1,30 @@
+{
+  "Provider": "aws",
+  "CheckID": "iam_group_unused",
+  "CheckTitle": "Unused IAM Groups",
+  "CheckType": [],
+  "ServiceName": "iam",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "arn:partition:service:region:account-id:resource-id",
+  "Severity": "high",
+  "ResourceType": "AwsIamGroup",
+  "Description": "The affected IAM groups, do not contain any users and are therefore not being used. To maintain the hygiene of the environment, make maintenance and auditing easier and reduce the risk of IAM groups erroneously being used and inadvertently granting more access than required, all old unused IAM groups should be removed.",
+  "Risk": "The affected IAM groups, do not contain any users and are therefore not being used. To maintain the hygiene of the environment, make maintenance and auditing easier and reduce the risk of IAM groups erroneously being used and inadvertently granting more access than required, all old unused IAM groups should be removed.",
+  "RelatedUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups_manage.html",
+  "Remediation": {
+    "Code": {
+      "CLI": "aws iam delete-group --group-name <groupname>",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "Ensure all IAM groups that are temporary and not being used are deleted when no longer required.",
+      "Url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}
