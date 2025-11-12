@@ -1,0 +1,34 @@
+{
+  "Provider": "aws",
+  "CheckID": "s3_bucket_policy_confused_deputy",
+  "CheckTitle": "S3 Bucket Policy Vulnerable to Cross-Service Confused Deputy Attacks",
+  "CheckType": [
+    "IAM"
+  ],
+  "ServiceName": "s3",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "arn:partition:s3:::bucket_name",
+  "Severity": "high",
+  "ResourceType": "AwsS3Bucket",
+  "Description": "S3 bucket policies allow AWS services to access the bucket without adequate conditional context restrictions. Without any conditional restrictions, buckets are vulnerable to the confused deputy problem which could allow unauthorised services in other AWS accounts indirect access to the affected bucket.\nWhen an AWS service principal from a calling service (CloudTrail for example) is accessing a resource in S3, the bucket’s resource policy is only authorizing the AWS service principal, and not the actor who configured the calling service. For example, an S3 bucket that trusts the CloudTrail service principal with no conditions could receive CloudTrail logs from the AWS accounts that a trusted admin configures, but also CloudTrail logs from an unauthorized actor in their AWS account, if they know the name of the S3 bucket.",
+  "Risk": "S3 bucket policies allow AWS services to access the bucket without adequate conditional context restrictions. Without any conditional restrictions, buckets are vulnerable to the confused deputy problem which could allow unauthorised services in other AWS accounts indirect access to the affected bucket.\nWhen an AWS service principal from a calling service (CloudTrail for example) is accessing a resource in S3, the bucket’s resource policy is only authorizing the AWS service principal, and not the actor who configured the calling service. For example, an S3 bucket that trusts the CloudTrail service principal with no conditions could receive CloudTrail logs from the AWS accounts that a trusted admin configures, but also CloudTrail logs from an unauthorized actor in their AWS account, if they know the name of the S3 bucket.",
+  "RelatedUrl": "",
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "it is recommended that S3 bucket policies that allows access to other AWS services contain conditional access statements. Using conditions and specifying the full ARN of the allowed resources would restrict access to only legitimate resources and reduce the potential for abuse. Specifying the full ARN, including region and resource name, will prevent attackers from leveraging other AWS services to access potentially sensitive data within your S3 buckets.\nWhere appropriate use the following conditional contexts following the principal of least privilege to effectively limit the scope of bucket policies and prevent unintended access opportunities:\n- aws:SourceArn\n- aws:SourceAccount\n- aws:SourceOrgID\n- aws:SourceOrgPaths",
+      "Url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html#cross-service-confused-deputy-prevention"
+    }
+  },
+  "Categories": [
+    "trust"
+  ],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}
