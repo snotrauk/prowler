@@ -43,5 +43,7 @@ class s3_bucket_policy_confused_deputy(Check):
             if report.status == "FAIL":
                 report.status_extended = f"S3 Bucket {bucket.name} is vulnerable to confused deputy attacks"
 
-            findings.append(report)
+            if report:
+                findings.append(report)
+
         return findings
