@@ -20,6 +20,18 @@ class iam_group_administrator_access_policy(Check):
                     report.status_extended = f"IAM Group {group.name} has AdministratorAccess policy attached."
                     break
 
+            for arn in iam_client.policies:
+                if iam_client.policies[arn].name in group.inline_policies:
+                    for statement in iam_client.policies[arn].document["Statement"]:
+                        if statement["Effect"] == "Allow":
+                            if statement["Action"] == "*":
+                                if statement["Resource"] == "*":
+                                    report.status = "FAIL"
+                                    report.status_extended = (
+                                        f"IAM Group {group.name} has AdministratorAccess policy attached."
+                                    )
+                                    break
+
             findings.append(report)
 
         return findings

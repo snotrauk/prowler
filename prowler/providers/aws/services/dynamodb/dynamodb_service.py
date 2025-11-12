@@ -61,6 +61,9 @@ class DynamoDB(AWSService):
                 table.deletion_protection = properties.get(
                     "DeletionProtectionEnabled", False
                 )
+
+                table.item_count = properties.get("ItemCount")
+
         except Exception as error:
             logger.error(
                 f"{error.__class__.__name__}:{error.__traceback__.tb_lineno} -- {error}"
@@ -232,6 +235,8 @@ class Table(BaseModel):
     region: str
     tags: Optional[list] = []
     deletion_protection: bool = False
+    item_count: int = 1
+    #item_count: int # not sure why this doesnt work?
 
 
 class Cluster(BaseModel):
