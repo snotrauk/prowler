@@ -53,11 +53,13 @@ class KMS(AWSService):
                 regional_client = self.regional_clients[key.region]
                 try:
                     response = regional_client.describe_key(KeyId=key.id)
+                    print(response)
                     key.state = response["KeyMetadata"]["KeyState"]
                     key.origin = response["KeyMetadata"]["Origin"]
                     key.manager = response["KeyMetadata"]["KeyManager"]
                     key.spec = response["KeyMetadata"]["CustomerMasterKeySpec"]
                     key.multi_region = response["KeyMetadata"]["MultiRegion"]
+                    key.description = response["KeyMetadata"]["Description"]
                 except Exception as error:
                     logger.error(
                         f"{regional_client.region} -- {error.__class__.__name__}:{error.__traceback__.tb_lineno} -- {error}"
@@ -149,3 +151,4 @@ class Key(BaseModel):
     region: str
     multi_region: Optional[bool]
     tags: Optional[list] = []
+    description: Optional[str]
