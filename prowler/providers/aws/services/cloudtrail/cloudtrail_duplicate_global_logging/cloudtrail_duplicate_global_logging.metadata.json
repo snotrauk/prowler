@@ -1,33 +1,27 @@
 {
   "Provider": "aws",
   "CheckID": "cloudtrail_duplicate_global_logging",
-  "CheckTitle": "Region has at least one CloudTrail trail logging",
-  "CheckType": [
-    "Software and Configuration Checks/AWS Security Best Practices",
-    "Software and Configuration Checks/Industry and Regulatory Standards/AWS Foundational Security Best Practices",
-    "Software and Configuration Checks/Industry and Regulatory Standards/CIS AWS Foundations Benchmark"
-  ],
+  "CheckTitle": "CloudTrail Duplicated Global Service Logging",
+  "CheckType": [],
   "ServiceName": "cloudtrail",
   "SubServiceName": "",
   "ResourceIdTemplate": "",
-  "Severity": "high",
+  "Severity": "informational",
   "ResourceType": "AwsCloudTrailTrail",
-  "Description": "**AWS CloudTrail** has at least one trail with `logging` enabled in every region. A **multi-region trail** or a regional trail counts for coverage in that region.",
-  "Risk": "Missing coverage in any region creates **visibility gaps**.\n\nAttackers can use lesser-monitored regions to run API actions, hide **unauthorized changes**, and exfiltrate data without audit trails, weakening **detective controls**, hindering **forensics**, and delaying response (confidentiality and integrity).",
+  "Description": "The account under review contains multiple Trails with global service logging enabled. While this does not jeopardize the security of the environment, duplicated entries in logs increase the difficulty to investigate potential incidents.\nFor most services, events are recorded in the region where the action occurred. For global services such as AWS Identity and Access Management (IAM), AWS STS, and Amazon CloudFront, events are delivered to any trail that includes global services.\nFor most global services, events are logged as occurring in US East (N. Virginia) Region, but some global service events are logged as occurring in other regions, such as US East (Ohio) Region or US West (Oregon) Region.\nTo avoid receiving duplicate global service events, remember the following:\n- Global service events are delivered by default to trails that are created using the CloudTrail console. Events are delivered to the bucket for the trail.\n- If you have multiple single region trails, consider configuring your trails so that global service events are delivered in only one of the trails. For more information, see Enabling and disabling logging global service events.\n- If you change the configuration of a trail from logging all regions to logging a single region, global service event logging is turned off automatically for that trail. Similarly, if you change the configuration of a trail from logging a single region to logging all regions, global service event logging is turned on automatically for that trail.",
+  "Risk": "The account under review contains multiple Trails with global service logging enabled. While this does not jeopardize the security of the environment, duplicated entries in logs increase the difficulty to investigate potential incidents.\nFor most services, events are recorded in the region where the action occurred. For global services such as AWS Identity and Access Management (IAM), AWS STS, and Amazon CloudFront, events are delivered to any trail that includes global services.\nFor most global services, events are logged as occurring in US East (N. Virginia) Region, but some global service events are logged as occurring in other regions, such as US East (Ohio) Region or US West (Oregon) Region.\nTo avoid receiving duplicate global service events, remember the following:\n- Global service events are delivered by default to trails that are created using the CloudTrail console. Events are delivered to the bucket for the trail.\n- If you have multiple single region trails, consider configuring your trails so that global service events are delivered in only one of the trails. For more information, see Enabling and disabling logging global service events.\n- If you change the configuration of a trail from logging all regions to logging a single region, global service event logging is turned off automatically for that trail. Similarly, if you change the configuration of a trail from logging a single region to logging all regions, global service event logging is turned on automatically for that trail.",
   "RelatedUrl": "",
-  "AdditionalURLs": [
-    "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrailconcepts.html#cloudtrail-concepts-management-events"
-  ],
+  "AdditionalURLs": [],
   "Remediation": {
     "Code": {
       "CLI": "",
-      "NativeIaC": "```yaml\n# CloudFormation: Create a multi-region CloudTrail and start logging\nResources:\n  <example_resource_name>:\n    Type: AWS::CloudTrail::Trail\n    Properties:\n      TrailName: <example_resource_name>\n      S3BucketName: <example_resource_name>\n      IsMultiRegionTrail: true  # Critical: applies the trail to all regions\n      IsLogging: true           # Critical: ensures the trail is logging\n```",
-      "Other": "1. In the AWS Console, go to CloudTrail > Trails\n2. If no trail exists: Click Create trail, enter a name, choose an S3 bucket, set Apply trail to all regions = Yes, then Create (logging starts)\n3. If a trail exists: Select it, click Edit, set Apply trail to all regions = Yes, Save\n4. If Status shows Not logging, click Start logging",
-      "Terraform": "```hcl\n# Terraform: Multi-region CloudTrail with logging enabled\nresource \"aws_cloudtrail\" \"<example_resource_name>\" {\n  name           = \"<example_resource_name>\"\n  s3_bucket_name = \"<example_resource_name>\"\n\n  is_multi_region_trail = true  # Critical: applies the trail to all regions\n  enable_logging        = true  # Critical: ensures the trail is logging\n}\n```"
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
     "Recommendation": {
-      "Text": "Use a **multi-region CloudTrail trail** or per-region trails so `logging` is active in every region, including unused ones.\n\nCentralize logs, enforce **least privilege** to log stores, and add **defense-in-depth** with encryption, integrity validation, and retention. Continuously monitor trail health to catch gaps.",
-      "Url": "https://hub.prowler.com/check/cloudtrail_multi_region_enabled"
+      "Text": "Global Seivice logging should only be enabled in one Trail.",
+      "Url": ""
     }
   },
   "Categories": [
