@@ -65,6 +65,8 @@ class Cloudtrail(AWSService):
                         log_group_arn=log_group_arn,
                         data_events=[],
                         has_insight_selectors=trail.get("HasInsightSelectors"),
+                        include_global_service_events=trail.get("IncludeGlobalServiceEvents")
+
                     )
             if trails_count == 0:
                 if self.trails is None:
@@ -253,3 +255,4 @@ class Trail(BaseModel):
     data_events: list[Event_Selector] = []
     tags: Optional[list] = []
     has_insight_selectors: str = None
+    include_global_service_events: bool = None
